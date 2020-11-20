@@ -7,9 +7,7 @@ function IsProgramLive({ programId }) {
   const { human_start_time, human_end_time } = schedule[programId];
 
   const isCurrentProgramOnAir = useMemo(() => {
-    if (new Date().toISOString().split('T')[0] === currentDate ||
-      new Date().getDate() === new Date(currentDate).getDate()
-    ) {
+    if (new Date().toISOString().split('T')[0] === currentDate) {
       const startHour = human_start_time.split(':')[0];
       const startMinute = human_start_time.split(':')[1];
 
