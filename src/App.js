@@ -12,8 +12,8 @@ function App() {
   const [isCardOpen, setIsCardOpen] = React.useState(() => { });
   const [programsCategories, setProgramsCategories] = React.useState(() => []);
   const [selectedCategory, setSelectedCategory] = React.useState(() => []);
-  const [currentDate, setCurrentDate] = React.useState(() => new Date());
   const todaysDate = new Date().toISOString().split("T")[0];
+  const [currentDate, setCurrentDate] = React.useState(() => todaysDate);
 
   async function fetchScheduleGrid(selectedDate = todaysDate) {
     const url = `${process.env.REACT_APP_BACKEND_API}/rpc/cronograma/${selectedDate}`
