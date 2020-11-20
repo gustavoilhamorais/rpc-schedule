@@ -24,3 +24,7 @@ code {
 .pointer {
   cursor: pointer;
 }
+
+.btn-primary {
+  background-color: #006497!important;
+}
