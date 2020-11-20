@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Col, Row } from 'shards-react';
 import GlobalContext from '../../containers/GlobalContext';
 
@@ -8,13 +8,6 @@ export default function DateNavigator() {
     currentDate,
     setCurrentDate
   } = useContext(GlobalContext);
-
-  const dateFormatOptions = {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  };
 
   function dropDate() {
     const yesterday = new Date(currentDate);
@@ -34,6 +27,22 @@ export default function DateNavigator() {
     fetchScheduleGrid(utfFormated);
   }
 
+  const date = useMemo(() => {
+    const dateFormatOptions = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    };
+
+    const format = object => object.toLocaleDateString('pt-BR', dateFormatOptions)
+    if (typeof (currentDate) === 'string') {
+      const _date = format(new Date([currentDate.split('-')].reverse().join('-')));
+      return _date;
+    }
+
+    return format(new Date(currentDate));
+  }, [currentDate]);
 
   return (
     <Row className="text-center mt-5">
@@ -42,7 +51,7 @@ export default function DateNavigator() {
       </Col>
       <Col>
         <h3 className="text-muted">
-          {new Date(currentDate).toLocaleDateString('pt-BR', dateFormatOptions)}
+          {date}
         </h3>
       </Col>
       <Col onClick={increaseDate} title="Dia anterior">
