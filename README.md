@@ -1,4 +1,6 @@
 # Grade de Programação RPC
+Este projeto tem como objetivo exibir uma grade de programação com dados provenientes da API EGP da Globo,\
+a partir de um backend próprio que realiza o tratamento dos dados.
 
 ## Scripts
 
