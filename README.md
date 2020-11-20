@@ -1,6 +1,6 @@
 # Grade de Programação RPC
 
-## Available Scripts
+## Scripts
 
 No diretório raíz do projeto, você pode rodar:
 
