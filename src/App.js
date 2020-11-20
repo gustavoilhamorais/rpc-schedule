@@ -17,7 +17,7 @@ function App() {
 
   async function fetchScheduleGrid(selectedDate = todaysDate) {
     const url = `${process.env.REACT_APP_BACKEND_API}/rpc/cronograma/${selectedDate}`
-
+    setIsLoading(true);
     await Axios.get(url)
       .then(({ data: { data }, status }) => {
         if (status === 200 && data.length) {
