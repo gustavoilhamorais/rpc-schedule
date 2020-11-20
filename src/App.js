@@ -14,9 +14,63 @@ function App() {
   const [selectedCategory, setSelectedCategory] = React.useState(() => []);
   const [currentDate, setCurrentDate] = React.useState(() => new Date());
   const todaysDate = new Date().toISOString().split("T")[0];
+
+  async function fetchScheduleGrid(selectedDate = todaysDate) {
+    const url = `${window.location.href.search("localhost")
+      ? process.env.REACT_APP_DEVELOPMENT
+      : process.env.REACT_APP_PRODUCTION}/rpc/cronograma/${selectedDate}}`
+
+    await Axios.get(url)
+      .then(({ data: { data }, status }) => {
+        if (status === 200 && data.length) {
+          setSchedule(() => data.map(program => {
+            let dictionary = [21, 22, 23];
+            const getHours = string => {
+              let number = Number(string.split(':')[0]);
+              return number !== 0 && number >= 3
+                ? number - 3
+                : dictionary[number]
+            };
+
+            const getMinutes = string => string.split(':')[1];
+            const convertedEndTime = program.human_end_time.split(":00+")[0];
+            const convertedStartTime = program.human_start_time.split(":00+")[0];
+
+            const endTimeGtmFixed = `${getHours(convertedEndTime)
+              }:${getMinutes(convertedEndTime)}`;
+
+            const startTimeGtmFixed = `${getHours(convertedStartTime)
+              }:${getMinutes(convertedStartTime)}`;
+
+            return {
+              ...program,
+              human_end_time: endTimeGtmFixed,
+              human_start_time: startTimeGtmFixed
+            }
+          }));
+
+          setProgramsCategories(() => {
+            return [
+              ...new Set(data.map(({ program }) => program.category))
+            ];
+          });
+        } else {
+          setError(() => `Nenhum dado encontrado para a data requisitada.`)
+        }
+      })
+      .catch(_error => setError(_error))
+      .finally(() => setIsLoading(false));
+  }
+
   function updateFilters({ target: { value } }) {
     setSelectedCategory(() => value);
   }
+
+  React.useEffect(() => {
+    fetchScheduleGrid();
+    return () => null;
+  }, []);
+
   return (
     <Provider value={{
       schedule,
