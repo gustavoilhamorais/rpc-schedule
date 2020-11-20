@@ -16,7 +16,7 @@ function App() {
   const todaysDate = new Date().toISOString().split("T")[0];
 
   async function fetchScheduleGrid(selectedDate = todaysDate) {
-    const url = `${window.location.href.search("localhost")
+    const url = `${window.location.href.search("localhost") < 0
       ? process.env.REACT_APP_DEVELOPMENT
       : process.env.REACT_APP_PRODUCTION}/rpc/cronograma/${selectedDate}}`
 
